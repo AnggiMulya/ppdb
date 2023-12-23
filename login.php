@@ -98,22 +98,27 @@ include("con_db/connection.php");
                             $enc_ps2 = md5($enc_ps);
                             $tpl_data = mysqli_fetch_row(mysqli_query($conn, "Select id_siswa, username, password, status_user from tb_siswa where username='$username' and password='$enc_ps2'"));
 
-                            $fi_id = $tpl_data[0];
-                            $fi_us = $tpl_data[1];
-                            $fi_ps = $tpl_data[2];
-                            $fi_st = $tpl_data[3];
-                            if ($username == $fi_us && $enc_ps2 == $fi_ps) {
-                                $_SESSION['fi_id'] = $fi_id;
-                                $_SESSION['fi_us'] = $fi_us;
-                                $_SESSION['fi_ps'] = $fi_ps;
-                                $_SESSION['fi_st'] = $fi_st;
+                            if(isset($tpl_data)){
+                                $fi_id = $tpl_data[0];
+                                $fi_us = $tpl_data[1];
+                                $fi_ps = $tpl_data[2];
+                                $fi_st = $tpl_data[3];
+                                if ($username == $fi_us && $enc_ps2 == $fi_ps) {
+                                    $_SESSION['fi_id'] = $fi_id;
+                                    $_SESSION['fi_us'] = $fi_us;
+                                    $_SESSION['fi_ps'] = $fi_ps;
+                                    $_SESSION['fi_st'] = $fi_st;
+                            
+                          
                         ?>
                                 <script type="text/javascript">
                                     window.location = "siswa/index.php";
                                 </script>
                                 <?php
+                                }
                             } else {
                                 $tpl_data_ad = mysqli_fetch_row(mysqli_query($conn, "Select id_admin, username, password, status from tb_admin where username='$username' and password='$enc_ps2'"));
+                               if($tpl_data_ad){
                                 $fi_id = $tpl_data_ad[0];
                                 $fi_us = $tpl_data_ad[1];
                                 $fi_ps = $tpl_data_ad[2];
@@ -125,15 +130,20 @@ include("con_db/connection.php");
                                     $_SESSION['fi_st'] = $fi_st;
 
                                 ?>
+                               
+                            
                                     <script type="text/javascript">
                                         window.location = "admin/index.php";
                                     </script>
                                 <?php
-                                } elseif ($username == $fi_us && $enc_ps2 == $fi_ps && $fi_st == "Kepsek") {
-                                    $_SESSION['fi_id'] = $fi_id;
-                                    $_SESSION['fi_us'] = $fi_us;
-                                    $_SESSION['fi_ps'] = $fi_ps;
-                                    $_SESSION['fi_st'] = $fi_st;
+                                }
+                            elseif ($username == $fi_us && $enc_ps2 == $fi_ps && $fi_st == "Kepsek") {
+                                    if(isset($fi_us)){
+                                        $_SESSION['fi_id'] = $fi_id;
+                                        $_SESSION['fi_us'] = $fi_us;
+                                        $_SESSION['fi_ps'] = $fi_ps;
+                                        $_SESSION['fi_st'] = $fi_st;
+                                    }
 
                                 ?>
                                     <script type="text/javascript">
@@ -141,10 +151,12 @@ include("con_db/connection.php");
                                     </script>
                                 <?php
                                 } elseif ($username == $fi_us && $enc_ps2 == $fi_ps && $fi_st == "Bendahara") {
-                                    $_SESSION['fi_id'] = $fi_id;
-                                    $_SESSION['fi_us'] = $fi_us;
-                                    $_SESSION['fi_ps'] = $fi_ps;
-                                    $_SESSION['fi_st'] = $fi_st;
+                                    if(isset($fi_us)){
+                                        $_SESSION['fi_id'] = $fi_id;
+                                        $_SESSION['fi_us'] = $fi_us;
+                                        $_SESSION['fi_ps'] = $fi_ps;
+                                        $_SESSION['fi_st'] = $fi_st;
+                                    }
 
                                 ?>
                                     <script type="text/javascript">
@@ -152,10 +164,12 @@ include("con_db/connection.php");
                                     </script>
                                 <?php
                                 } elseif ($username == $fi_us && $enc_ps2 == $fi_ps && $fi_st == "Wawancara") {
-                                    $_SESSION['fi_id'] = $fi_id;
-                                    $_SESSION['fi_us'] = $fi_us;
-                                    $_SESSION['fi_ps'] = $fi_ps;
-                                    $_SESSION['fi_st'] = $fi_st;
+                                    if(isset($fi_us)){
+                                        $_SESSION['fi_id'] = $fi_id;
+                                        $_SESSION['fi_us'] = $fi_us;
+                                        $_SESSION['fi_ps'] = $fi_ps;
+                                        $_SESSION['fi_st'] = $fi_st;
+                                    }
 
                                 ?>
                                     <script type="text/javascript">
@@ -169,6 +183,7 @@ include("con_db/connection.php");
                                     </div>
                             <?php
                                 }
+                            }
                             }
                         }
                         if (isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi_ps'])) {
