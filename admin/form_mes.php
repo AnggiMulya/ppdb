@@ -6,7 +6,11 @@ if(isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi
         $fi_id=$_SESSION['fi_id'];
         if($status=="Admin")
             {
-                $st=$_GET['st'];
+                if(isset($_GET['st'])){
+                    $st=$_GET['st'];
+                }else{
+                    $st = null;
+                }
                 if($st=="cf")
                 {
                     $cr="where status!='Baru'";
