@@ -91,101 +91,58 @@ include("con_db/connection.php");
                         <hr />
 
                         <?php
-                        if (isset($_POST['tblogin'])) {
-                            $username = str_replace("'", "`", $_POST['username']);
-                            $password = str_replace("'", "`", $_POST['password']);;
-                            $enc_ps = sha1($password);
-                            $enc_ps2 = md5($enc_ps);
-                            $tpl_data = mysqli_fetch_row(mysqli_query($conn, "Select id_siswa, username, password, status_user from tb_siswa where username='$username' and password='$enc_ps2'"));
+if (isset($_POST['tblogin'])) {
+    $username = str_replace("'", "`", $_POST['username']);
+    $password = str_replace("'", "`", $_POST['password']);
+    $enc_ps = md5(sha1($password));
 
-                            if(isset($tpl_data)){
-                                $fi_id = $tpl_data[0];
-                                $fi_us = $tpl_data[1];
-                                $fi_ps = $tpl_data[2];
-                                $fi_st = $tpl_data[3];
-                                if ($username == $fi_us && $enc_ps2 == $fi_ps) {
-                                    $_SESSION['fi_id'] = $fi_id;
-                                    $_SESSION['fi_us'] = $fi_us;
-                                    $_SESSION['fi_ps'] = $fi_ps;
-                                    $_SESSION['fi_st'] = $fi_st;
-                            
-                          
-                        ?>
-                                <script type="text/javascript">
-                                    window.location = "siswa/index.php";
-                                </script>
-                                <?php
-                                }
-                            } else {
-                                $tpl_data_ad = mysqli_fetch_row(mysqli_query($conn, "Select id_admin, username, password, status from tb_admin where username='$username' and password='$enc_ps2'"));
-                               if($tpl_data_ad){
-                                $fi_id = $tpl_data_ad[0];
-                                $fi_us = $tpl_data_ad[1];
-                                $fi_ps = $tpl_data_ad[2];
-                                $fi_st = $tpl_data_ad[3];
-                                if ($username == $fi_us && $enc_ps2 == $fi_ps && $fi_st == "Admin") {
-                                    $_SESSION['fi_id'] = $fi_id;
-                                    $_SESSION['fi_us'] = $fi_us;
-                                    $_SESSION['fi_ps'] = $fi_ps;
-                                    $_SESSION['fi_st'] = $fi_st;
+    // Check in tb_siswa
+    $tpl_data = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id_siswa, username, password, status_user FROM tb_siswa WHERE username='$username' AND password='$enc_ps'"));
 
-                                ?>
-                               
-                            
-                                    <script type="text/javascript">
-                                        window.location = "admin/index.php";
-                                    </script>
-                                <?php
-                                }
-                            elseif ($username == $fi_us && $enc_ps2 == $fi_ps && $fi_st == "Kepsek") {
-                                    if(isset($fi_us)){
-                                        $_SESSION['fi_id'] = $fi_id;
-                                        $_SESSION['fi_us'] = $fi_us;
-                                        $_SESSION['fi_ps'] = $fi_ps;
-                                        $_SESSION['fi_st'] = $fi_st;
-                                    }
+    if ($tpl_data) {
+        $_SESSION['fi_id'] = $tpl_data['id_siswa'];
+        $_SESSION['fi_us'] = $tpl_data['username'];
+        $_SESSION['fi_ps'] = $tpl_data['password'];
+        $_SESSION['fi_st'] = $tpl_data['status_user'];
+        ?>
+        <script type="text/javascript">
+            window.location = "siswa/index.php";
+        </script>
+        <?php
+        exit;
+    }
 
-                                ?>
-                                    <script type="text/javascript">
-                                        window.location = "kepsek/index.php";
-                                    </script>
-                                <?php
-                                } elseif ($username == $fi_us && $enc_ps2 == $fi_ps && $fi_st == "Bendahara") {
-                                    if(isset($fi_us)){
-                                        $_SESSION['fi_id'] = $fi_id;
-                                        $_SESSION['fi_us'] = $fi_us;
-                                        $_SESSION['fi_ps'] = $fi_ps;
-                                        $_SESSION['fi_st'] = $fi_st;
-                                    }
+    // Check in tb_admin
+    $tpl_data_ad = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id_admin, username, password, status FROM tb_admin WHERE username='$username' AND password='$enc_ps'"));
 
-                                ?>
-                                    <script type="text/javascript">
-                                        window.location = "bendahara/index.php";
-                                    </script>
-                                <?php
-                                } elseif ($username == $fi_us && $enc_ps2 == $fi_ps && $fi_st == "Wawancara") {
-                                    if(isset($fi_us)){
-                                        $_SESSION['fi_id'] = $fi_id;
-                                        $_SESSION['fi_us'] = $fi_us;
-                                        $_SESSION['fi_ps'] = $fi_ps;
-                                        $_SESSION['fi_st'] = $fi_st;
-                                    }
+    if ($tpl_data_ad) {
+        $fi_st = $tpl_data_ad['status'];
+        if ($fi_st == "Admin" || $fi_st == "Kepsek" || $fi_st == "Bendahara" || $fi_st == "Wawancara") {
+            $_SESSION['fi_id'] = $tpl_data_ad['id_admin'];
+            $_SESSION['fi_us'] = $tpl_data_ad['username'];
+            $_SESSION['fi_ps'] = $tpl_data_ad['password'];
+            $_SESSION['fi_st'] = $fi_st;
+            ?>
+            <script type="text/javascript">
+                window.location = "<?php echo ($fi_st == 'Admin') ? 'admin/index.php' : strtolower($fi_st) . '/index.php'; ?>";
+            </script>
+            <?php
+            exit;
+        }
+    }
 
-                                ?>
-                                    <script type="text/javascript">
-                                        window.location = "wawancara/index.php";
-                                    </script>
-                                <?php
-                                } else {
-                                ?>
-                                    <div class="tz-portfolio-project">
-                                        <a href="#">Error !! Anda Gagal Login Username dan Password Yang Anda Inputkan Tidak Terdaftar.</a>
-                                    </div>
-                            <?php
-                                }
-                            }
-                            }
-                        }
+    // Invalid login
+    ?>
+    <div class="tz-portfolio-project">
+        <a href="#">Error !! Anda Gagal Login Username dan Password Yang Anda Inputkan Tidak Terdaftar.</a>
+    </div>
+    <?php
+}
+
+
+
+
+                        
                         if (isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi_ps'])) {
                             ?>
                             <div class="tz-portfolio-project" style="color: white">
