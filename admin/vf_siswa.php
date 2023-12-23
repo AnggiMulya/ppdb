@@ -138,12 +138,12 @@ if(isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi
                                     </li>
 
                                     <hr />
-                                    <li>
+                                    <!-- <li>
                                         <a href="lg_user">
                                             <span class="glyphicons glyphicons-bell"></span>
                                             <span class="sidebar-title">Log User</span>
                                         </a>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <a href="logout">
                                             <span class="glyphicons glyphicons-pen"></span>
