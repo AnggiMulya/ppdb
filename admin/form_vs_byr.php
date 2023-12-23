@@ -6,8 +6,13 @@ if(isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi
         $fi_id=$_SESSION['fi_id'];
         if($status=="Admin")
             {
-                $st=$_GET['st'];
-                if(isset($_POST['tb_src']))
+                if(isset($_GET['st'])){
+                    $st=$_GET['st'];
+                }else{
+                    $st = null;
+                }
+
+                if(true)
                 {
                    if(empty($_POST['tg_i']) || empty($_POST['tg_o']))
                     {
