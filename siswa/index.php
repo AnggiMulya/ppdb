@@ -389,9 +389,9 @@ if(isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi
 				                                                	$d_en=mysqli_fetch_row(mysqli_query($conn,"Select pesan from tb_konfirmasi_pendaftaran where id_siswa='$fi_id'"));	
 				                                                		?>
 				                                                		<tr>
-					                                                        <!-- <td><?php echo"$d_en[0]";?></td> -->
+					                                                        <!-- <td><?= isset($d_en) && isset($d_en[0]) ? $d_en[0] : "";?></td> -->
 					                                                        <td style="vertical-align: top">Catatan</td>
-					                                                        <td style="vertical-align: top"><?php echo"$d_en[0]";?></td>
+					                                                        <td style="vertical-align: top"><?= isset($d_en) && isset($d_en[0]) ? $d_en[0] : "";?></td>
 					                                                    </tr>
 			                                                </tbody>
 			                                            </table>
@@ -429,7 +429,7 @@ if(isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi
 				                                                        <!-- <td><?php echo"$d_kl[0]";?></td> -->
 				                                                        <td style="vertical-align: top">Metode Pembayaran</td>
 				                                                        <td style="vertical-align: top">
-				                                                        	<?php echo"$s_n_r[4]"?>
+				                                                        	<?= isset($d_en) && isset($d_en[0]) ? $s_n_r[4] : ""?>
 				                                                        </td>
 				                                                    </tr>
 			                                                		<tr>
