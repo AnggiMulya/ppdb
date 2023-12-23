@@ -429,7 +429,7 @@ if(isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi
 				                                                        <!-- <td><?php echo"$d_kl[0]";?></td> -->
 				                                                        <td style="vertical-align: top">Metode Pembayaran</td>
 				                                                        <td style="vertical-align: top">
-				                                                        	<?= isset($d_en) && isset($d_en[0]) ? $s_n_r[4] : ""?>
+				                                                        	<?= isset($s_n_r) && isset($s_n_r[4]) ? $s_n_r[4] : ""?>
 				                                                        </td>
 				                                                    </tr>
 			                                                		<tr>
