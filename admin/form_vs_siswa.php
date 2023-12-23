@@ -6,8 +6,13 @@ if(isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi
         $fi_id=$_SESSION['fi_id'];
         if($status=="Admin")
             {
-                $st=$_GET['st'];
-                if(isset($_POST['tb_src']))
+                if(isset($_GET['st'])){
+                    $st=$_GET['st'];
+                }else{
+                    $st = null;
+                }
+
+                if(true)
                 {
                    if(empty($_POST['tg_i']) || empty($_POST['tg_o']))
                     {
@@ -74,10 +79,10 @@ if(isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi
                     <div class="col-md-12">
                         <form method="post" action="vf_siswa?st=<?php echo"$st";?>">
                             <div class="col-md-4" style="vertical-align: top">
-                                 <input type="text" id="datepicker1" name="tg_i" class="form-control" placeholder="Tanggal Mulai Pendaftaran" value="<?php echo"$tg_in1";?>">
+                                 <input type="text" id="datepicker1" name="tg_i" class="form-control" placeholder="Tanggal Mulai Pendaftaran" value="<?= date('Y-m-d', strtotime('-1 week'))?>">
                             </div>
                             <div class="col-md-4" style="vertical-align: top">
-                                 <input type="text" id="datepicker2" name="tg_o" class="form-control" placeholder="Tanggal Akhir Pendaftaran" value="<?php echo"$tg_ou1";?>">
+                                 <input type="text" id="datepicker2" name="tg_o" class="form-control" placeholder="Tanggal Akhir Pendaftaran" value="<?= date('Y-m-d');?>">
                             </div>
                             <div class="col-md-4" style="vertical-align: top">
                                 <button class="btn btn-default" name="tb_src"><i class="fa fa-search"></i></button>
@@ -223,3 +228,10 @@ else
     }
 ?>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Temukan tombol berdasarkan ID dan klik secara otomatis
+      var button = document.getElementById('tb_src');
+      button.click();
+    });
+  </script>
