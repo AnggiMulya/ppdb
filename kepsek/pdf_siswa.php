@@ -1,37 +1,52 @@
 <?php
 session_start();
-if(isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi_ps']))
-    {
-        include ("../con_db/connection.php");
-        $status=$_SESSION['fi_st'];
-        $u=$_GET['d'];
 
-        $tp_dt_sis=mysqli_fetch_row(mysqli_query($conn,"Select no_pendaftaran, nama_siswa, nisn, tempat_lahir, tgl_lahir, jenis_kelamin, agama, anak_ke, dari, status_dalam_keluarga, alamat_siswa, telepon, sekolah_asal, nama_sekolah, alamat, sttb_tahun, sttb_nomor, bind, mtk, ipa, nama_ayah, nama_ibu, asal_ortu, asal_lain, alamat_ortu, telepon_ortu, kerja_ayah, kerja_ibu, nama_wali, alamat_wali, telepon_wali, pekerjaan_wali, foto, foto_skhu, jumlah_nilai, email_aktif, kelas, status, domisili_siswa, domisili_ortu, golongan_darah from tb_siswa where id_siswa='$u'"));
-        if($status=="Kepsek")
-            {
-                $fortg=date("d-M-Y",strtotime($tp_dt_sis[4]));
-                if($tp_dt_sis[5]=="1"){$je_k="Pria";}elseif($tp_dt_sis[5]=="2"){$je_k="Wanita";}else{$je_k="-";}
-                $tp_st_s=mysqli_fetch_row(mysqli_query($conn,"Select pesan from tb_konfirmasi_pendaftaran where id_siswa='$u'"));
-                $header="
+$currentPath = __DIR__;
+$desiredLevel = 1;
+
+for ($i = 0; $i < $desiredLevel; $i++) {
+    $currentPath = dirname($currentPath);
+}
+
+require_once $currentPath . '/vendor/autoload.php';
+
+if (isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi_ps'])) {
+    include("../con_db/connection.php");
+    $status = $_SESSION['fi_st'];
+    $u = $_GET['d'];
+
+    $tp_dt_sis = mysqli_fetch_row(mysqli_query($conn, "Select no_pendaftaran, nama_siswa, nisn, tempat_lahir, tgl_lahir, jenis_kelamin, agama, anak_ke, dari, status_dalam_keluarga, alamat_siswa, telepon, sekolah_asal, nama_sekolah, alamat, sttb_tahun, sttb_nomor, bind, mtk, ipa, nama_ayah, nama_ibu, asal_ortu, asal_lain, alamat_ortu, telepon_ortu, kerja_ayah, kerja_ibu, nama_wali, alamat_wali, telepon_wali, pekerjaan_wali, foto, foto_skhu, jumlah_nilai, email_aktif, kelas, status, domisili_siswa, domisili_ortu, golongan_darah from tb_siswa where id_siswa='$u'"));
+
+    if ($status == "Admin") {
+        $fortg = date("d-M-Y", strtotime($tp_dt_sis[4]));
+        if ($tp_dt_sis[5] == "1") {
+            $je_k = "Pria";
+        } elseif ($tp_dt_sis[5] == "2") {
+            $je_k = "Wanita";
+        } else {
+            $je_k = "-";
+        }
+        $tp_st_s = mysqli_fetch_row(mysqli_query($conn, "Select pesan from tb_konfirmasi_pendaftaran where id_siswa='$u'"));
+        $header = "
 
                 <table style='width:100%'>
                     <tr>
                         <td style='width:13%' style='text-align:center'><img src='../logo/logo.png' style='width:13%'></td>
                         <td style='width:40%' style='text-align:center'>
                             <div align='center'>
-                            <font style='text-align:center;font-size:25vw'><strong>FORMULIR PENDAFTARAN</font><br />
+                            <font style='text-align:center;font-size:25vw'><strong>FORMULIR PENDAFTARAN</font><br/>
                             <font style='text-align:center;font-size:20vw'><strong>PESERTA DIDIK BARU TAHUN PELAJARAN 2021/2022</strong></font><br/>
-                            <font style='text-align:center;font-size:17vw'><strong>SMP MUHAMMADIYAH 4 YOGYAKARTA</strong></font><br/>
+                            <font style='text-align:center;font-size:17vw'><strong>SMP MUHAMMADIYAH 4 YOGYAKARTA</strong></font><br>
                             </div>
                         </td>
                     </tr>
                 </table>
                 <hr />";
 
-                $isi="<table style='width:100%'>
+        $isi = "<table style='width:100%'>
                         <tr>
                             <td style='width:20%;vertical-align:top'>
-                                <img src='../siswa/foto_pp/$tp_dt_sis[27]' width='3cm' height='4cm'>
+                                <img src='../siswa/foto_pp/$tp_dt_sis[32]' width='3cm' height='4cm'>
                             </td>
                             <td style='width:80%;vertical-align:top'>
                                 <table>
@@ -46,7 +61,7 @@ if(isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi
                                         <td style='vertical-align:top'>$tp_dt_sis[37]</td>
                                     </tr>
                                     <tr>
-                                        <td style='vertical-align:top'><strong>Status</strong></td>
+                                        <td style='vertical-align:top'><strong>Catatan Status</strong></td>
                                         <td style='vertical-align:top'><strong>:</strong></td>
                                         <td style='vertical-align:top'>$tp_st_s[0]</td>
                                     </tr>
@@ -93,7 +108,7 @@ if(isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi
                         <tr>
                             <td style='vertical-align:top'><strong>Anak ke</strong></td>
                             <td style='vertical-align:top'><strong>:</strong></td>
-                            <td style='vertical-align:top'>$tp_dt_sis[7] Dari : $tp_dt_sis[8] Bersaudara</td>
+                            <td style='vertical-align:top'>$tp_dt_sis[7] dari : $tp_dt_sis[8] Bersaudara</td>
                         </tr>
                         <tr>
                             <td style='vertical-align:top'><strong>Status Keluarga</strong></td>
@@ -170,15 +185,15 @@ if(isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi
                             <td style='vertical-align:top'><strong>:</strong></td>
                             <td style='vertical-align:top'>$tp_dt_sis[22]</td>
                         </tr>";
-                        if($tp_dt_sis[22] == "Lainnya"){
-                            $isi.= "<tr>
+        if ($tp_dt_sis[22] == "Lainnya") {
+            $isi .= "<tr>
                                 <td style='vertical-align:top'><strong></strong></td>
                                 <td style='vertical-align:top'><strong></strong></td>
                                 <td style='vertical-align:top'>$tp_dt_sis[23]</td>
                             </tr>";
-                        }
-                        
-                        $isi .= "<tr>
+        }
+
+        $isi .= "<tr>
                             <td style='vertical-align:top'><strong>Alamat Orang Tua (Sesuai C1/KK)</strong></td>
                             <td style='vertical-align:top'><strong>:</strong></td>
                             <td style='vertical-align:top'>$tp_dt_sis[24]</td>
@@ -256,29 +271,22 @@ if(isset($_SESSION['fi_id']) && isset($_SESSION['fi_us']) && isset($_SESSION['fi
                         </tr>
                     </table>";
 
-                include('../MPDF54/mpdf.php');
-                $lap="Formulir-pendaftaran-$tp_dt_sis[0] | Report";
-                $mpdf = new mPDF ('c','LEGAL','11','',20,20,12,18,5,5,'');
-                // var_dump($tp_dt_sis);
-                // var_dump($isi);
-                $mpdf ->WriteHTML($header.$isi);
-                $mpdf ->Output($lap.'.pdf','I');
-            }
-        else
-            {
-                ?>
-                <script type="text/javascript">
-                    window.location="../index";
-                </script>
-                <?php
-            }
-    }
-else
-    {
-        ?>
+        $lap = "Formulir-pendaftaran-$tp_dt_sis[0] | Report";
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->WriteHTML($header . $isi);
+        $mpdf->Output($lap . '.pdf', 'I');
+    } else {
+?>
         <script type="text/javascript">
-            window.location="../index";
+            window.location = "../index";
         </script>
-        <?php
+    <?php
     }
+} else {
+    ?>
+    <script type="text/javascript">
+        window.location = "../index";
+    </script>
+<?php
+}
 ?>
